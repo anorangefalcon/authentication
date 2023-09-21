@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="input-container" [class.loading]="loading === true">
+        <h2 class="title">Let's Get Started</h2>
+        <form [formGroup]="authForm" class="input-form" (ngSubmit)="authenticate()">
+            <div class="email-input">
+                <input class="input-field" name="email" type="email" id="email" autocomplete="email"
+                    placeholder="Enter your email" required [readOnly]="emailExists" [class.read-only]="emailExists"
+                    formControlName="email">
+                <span (click)="edit()" *ngIf="emailExists" class="edit-icon material-symbols-outlined">
+                    edit
+                </span>
+            </div>
+
+            <input class="input-field" *ngIf="emailExists" name="password" id="password" autocomplete="current-password"
+                [class.wrongPassword]="passwordMatched === false" type="password" placeholder="password" required
+                formControlName="password">
+            <small *ngIf="!passwordMatched">
+                Incorrect password
+            </small>
+            <small *ngIf="inactiveAccount">
+                This user has been deleted by the admin.
+            </small>
+            <small *ngIf="isProviderAccount">
+                Use {{isProviderAccount}} provider to Login.
+            </small>
+
+            <div class="buttons-div">
+                <button *ngIf="!emailExists" [disabled]="!authForm.get('email')?.valid"
+                    [class.disabled-btn]="!authForm.get('email')?.valid" class="next-btn btn">
+                    <span class="material-symbols-outlined">
+                        navigate_next
+                    </span>
+                </button>
+
+                <button *ngIf="emailExists" class="login-btn btn">
+                    LOGIN
+                </button>
+
+            </div>
+
+        </form>
+
+        <div class="provider-login">
+
+            <div id="g_id_onload"
+            data-client_id="628861919103-dav32kkklt1pne4pn1ljck5380u20fp2.apps.googleusercontent.com"
+            data-context="signin" data-ux_mode="popup" data-callback="googleAuthCallback"
+            data-itp_support="true">
+            </div>
+            
+            <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+            data-text="signin_with" data-size="large" data-logo_alignment="left">
+            </div>
+
+            <!-- <asl-google-signin-button class="g-btn" type='icon' size='medium'>
+            </asl-google-signin-button>
+
+
+            <button type="button" (click)="loginWithFacebook()" class="">
+                <img src="./../../assets/facebook.png" alt="facebook-icon">
+            </button> -->
+        </div>
+    </div>
+</div>
+

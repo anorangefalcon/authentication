@@ -1,0 +1,119 @@
+[
+    {
+      "basic": {
+        "name": "John Doe",
+        "image": "https://example.com/image1.jpg",
+        "age": 25,
+        "gender": "male",
+        "mobile": 1234567890,
+        "address": {
+          "city": "New York",
+          "state": "New York",
+          "country": "USA"
+        }
+      },
+      "education": [
+        {
+          "percentage": 80,
+          "institution": "ABC University",
+          "degree": "Bachelor of Science",
+          "year": {
+            "from": 2015,
+            "to": 2019
+          }
+        },
+        {
+          "percentage": 90,
+          "institution": "XYZ College",
+          "degree": "Master of Business Administration",
+          "year": {
+            "from": 2020,
+            "to": 2022
+          }
+        }
+      ],
+      "experience": [
+        {
+          "company": "ABC Company",
+          "designation": "Software Engineer",
+          "year": {
+            "from": {
+              "year": 2019
+            },
+            "to": {
+              "year": 2021
+            }
+          }
+        },
+        {
+          "company": "XYZ Corporation",
+          "designation": "Senior Manager",
+          "year": {
+            "from": {
+              "month": "January",
+              "date": 1,
+              "year": 2022
+            }
+          }
+        }
+      ]
+    },
+    {
+      "basic": {
+        "name": "Jane Smith",
+        "image": "https://example.com/image2.jpg",
+        "age": 30,
+        "gender": "female",
+        "mobile": 9876543210,
+        "address": {
+          "city": "Los Angeles",
+          "state": "California",
+          "country": "USA"
+        }
+      },
+      "education": [
+        {
+          "percentage": 85,
+          "institution": "DEF University",
+          "degree": "Bachelor of Arts",
+          "year": {
+            "from": 2010,
+            "to": 2014
+          }
+        },
+        {
+          "percentage": 95,
+          "institution": "PQR College",
+          "degree": "Master of Science",
+          "year": {
+            "from": 2015,
+            "to": 2017
+          }
+        }
+      ],
+      "experience": [
+        {
+          "company": "DEF Company",
+          "designation": "Marketing Manager",
+          "year": {
+            "from": {
+              "year": 2014
+            },
+            "to": {
+              "year": 2019
+            }
+          }
+        },
+        {
+          "company": "PQR Corporation",
+          "designation": "Product Manager",
+          "year": {
+            "from": {
+              "year": 2020
+            }
+          }
+        }
+      ]
+    }
+  ]
+  

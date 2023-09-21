@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="input-container" [class.loading]="loading === true">
+        <h2 class="title">Register</h2>
+        <form [formGroup]="authForm" class="input-form" (ngSubmit)="register()">
+            <div class="email-input">
+                <input class="input-field email" name="email" type="email" id="email" autocomplete="email"
+                    placeholder="Enter your email" required formControlName="email">
+                <span [routerLink]="['/']" class="edit-icon material-symbols-outlined">
+                    edit
+                </span>
+            </div>
+
+
+            <input class="input-field" name="password" type="password" placeholder="Enter Password"
+                autocomplete="new-password" required formControlName="password">
+            <input class="input-field" name="password" type="password" placeholder="Confirm Password"
+                autocomplete="new-password" required formControlName="confirmPassword">
+            <small *ngIf="!passwordMatched">
+                Password should be at least 8 characters long.
+            </small>
+            <button type="submit"
+            [disabled]="!authForm.valid"
+            [class.disabled-btn] = "!authForm.valid"
+            class="signup-btn btn">
+                SIGN UP
+            </button>
+        </form>
+    </div>
+</div>

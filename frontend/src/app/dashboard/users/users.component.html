@@ -1,0 +1,133 @@
+<app-navbar></app-navbar>
+<div class="container">
+
+    <div class="d-flex action-div">
+        <div class="search-bar">
+            <input type="text" placeholder="search" [(ngModel)]="searchText" (keyup)="onSearchTextChanged(); search()">
+        </div>
+        
+        <div class="pagination">
+
+            <div class="filters d-flex">
+                <div>
+                    <span>
+                        <input [(ngModel)]="showAdminBool" type="checkbox" name="showAdmin" (change)="page= 1;filter();">
+                        <label for="showAdmin"> Show Admins</label>
+                    </span>
+                    <!-- <span>
+                        <input [(ngModel)]="showAdminBool" type="checkbox" name="showAdmin" (change)="page= 1;filter();">
+                    <label for="showAdmin"> Show </label>
+                    </span> -->
+                </div>
+
+                <!-- SORTING -->
+                <select name="sort" id="sort" [(ngModel)]="sortBy" (change)="page = 1; filter()">
+                    <option value="createdAt">User Created</option>
+                    <option value="name">Name</option>
+                    <option value="email">Email</option>
+                    <option value="mobile">Mobile</option>
+                </select>
+            </div>
+
+            <select name="limit" id="limit" [(ngModel)]="limit"(change)="page = 1; pagination()">
+                <option value=1>1</option>
+                <option value=3>3</option>
+                <option value=5>5</option>
+                <option value=10>10</option>
+            </select>
+
+            <div class="page-btns">
+                <button [disabled]="page<=1" class="material-symbols-outlined" (click)="page = page - 1; pagination()">
+                    chevron_left
+                </button>
+
+                <button (click)="page = 1; pagination()" *ngIf="page>2">
+                    1
+                </button>
+                <span *ngIf="page>2">...</span>
+                <button (click)="page = page - 1; pagination()" *ngIf="page>1">
+                    {{page - 1}}
+                </button>
+                <button class="active">
+                    {{page}}
+                </button>
+                <button (click)="page = page + 1; pagination()" *ngIf="page < (totalPages-1)">
+                    {{page + 1}}
+                </button>
+                <span *ngIf="page < totalPages">...</span>
+                <button (click)="page = totalPages; pagination()" *ngIf="page < totalPages">
+                    {{totalPages}}
+                </button>
+
+                <button [disabled]="page>=totalPages" class="material-symbols-outlined" (click)="page = page + 1; pagination()">
+                    chevron_right
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>action</th>
+                    <th *ngFor="let item of table.headers">{{item}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of table.data">
+                    <td>
+                        <span class="del-btn" (click)="deleteUser(item.email)">
+                            <span class="material-symbols-outlined">
+                                delete
+                                </span>
+                        </span>
+                    </td>
+
+                    <td routerLink='/dashboard/edit/{{item.email}}'>
+                        {{item.name}} 
+                        <span class="edit material-symbols-outlined">
+                        edit
+                        </span></td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.mobile}}</td>
+
+                    <td *ngIf="item.gender === 'female'">
+                        <span class="material-symbols-outlined">
+                            female
+                        </span>
+                    </td>
+                    <td *ngIf="item.gender === 'male'">
+                        <span class="material-symbols-outlined">
+                            male
+                        </span>
+                    </td>
+
+                    <td>
+                        <div class="span-item" *ngFor="let education of item.education">
+                            <span>{{education.degree}} from</span>
+                            <span>{{education.institution}}</span>
+                            <span>({{education.from}} - {{education.to}})</span>
+                        </div>
+                    </td>
+    
+    
+                    <td>
+                        <div class="span-item" *ngFor="let experience of item.experience">
+                            <span>{{experience.designation}} at</span>
+                            <span>{{experience.company}}</span>
+                            <span>({{experience.from}} - {{experience.to}})</span>
+                        </div>
+                    </td>
+                    
+                </tr>
+    
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center d-flex justify-space-between">
+        <span>Showing {{limit}} of {{totalEntries}} users</span>
+        <span>Page: {{page}} / {{totalPages}}</span>
+    </div>
+</div>

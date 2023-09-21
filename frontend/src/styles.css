@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-inline: 20px;
+}
+
+.input-field {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    width: 300px;
+
+    &:focus {
+        border-color: #4285f4;
+    }
+}
+.text-center{
+    text-align: center;
+}
+.d-flex{
+    display: flex;
+}
+.align-center{
+    align-items: center;
+}
+.justify-center{
+    justify-content: center;
+}
+.justify-space-between{
+    justify-content: space-between;
+}
+.flex-column{
+    flex-direction: column;
+}
+
+
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}

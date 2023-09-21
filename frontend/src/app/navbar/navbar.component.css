@@ -1,0 +1,25 @@
+nav{
+    position: fixed;
+    right: 50px;
+    top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid #4285f4;
+    background-color: #ffffff;
+    color: #4285f4;
+    cursor: pointer;
+    padding: 5px;
+    transition: all 0.3s ease-in-out;
+    & span{
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &:hover{
+        color: white;
+        background-color: #4285f4;
+    }
+}

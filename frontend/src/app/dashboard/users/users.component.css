@@ -1,0 +1,144 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    padding-block-start: 50px;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 14px;
+    width: 100%;
+    border-radius: 10px;
+    /* overflow: hidden; 
+    text-overflow: ellipsis; */
+}
+
+td,
+th {
+    white-space: nowrap;
+    padding: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+th {
+    text-transform: uppercase;
+    background-color: #f5f5f5;
+    color: #333;
+    font-weight: bold;
+}
+
+td {
+    cursor: pointer;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+tbody tr:hover {
+    color: #4285f4;
+    background-color: #e0e0e0;
+}
+
+.span-item {
+    display: flex;
+    gap: 5px;
+}
+
+.del-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & span {
+        font-size: 16px;
+        font-weight: 300;
+    }
+
+    &:hover {
+        & span {
+            color: red;
+        }
+    }
+}
+
+.edit {
+    font-size: 12px;
+    font-weight: 300;
+    color: #4285f4;
+}
+
+.action-div {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    & .search-bar {
+        display: flex;
+        align-items: center;
+
+        & input {
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 5px;
+            padding: 5px;
+        }
+    }
+}
+
+.pagination {
+    display: flex;
+
+    & select#limit {
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    gap: 30px;
+}
+
+.page-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & button {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: transparent;
+        cursor: pointer;
+        padding: 5px 10px;
+        margin: 0 3px;
+        font-size: 16px;
+        color: #333;
+        transition: color 0.3s;
+
+        &:disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        &:hover {
+            color: #007bff;
+        }
+    }
+
+    & span {
+        margin: 0 3px;
+    }
+
+    .active{
+        background-color: #007bff;
+        color: #fff;
+        &:hover {
+            background-color: #0b62ee;
+            color: #ffffff;
+        }
+    }
+}

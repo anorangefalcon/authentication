@@ -1,0 +1,277 @@
+<app-navbar></app-navbar>
+<body [class.active-tab-basic]="form == 'basicDetails'" [class.active-tab-education]="form == 'education'"
+    [class.active-tab-experience]="form == 'experience'">
+    <div class="container">
+        <div class="forSwitch d-flex">
+            <button (click)="form = 'basicDetails'">
+                <span class="person-icon material-symbols-outlined" [class.active-tab]="form === 'basicDetails'">
+                    person
+                </span>
+            </button>
+            <button [disabled]="!basicDetails.valid" (click)="form = 'education'">
+                <span class="material-symbols-outlined" [class.active-tab]="form === 'education'"
+                    [class.education-icon]="basicDetails.valid">
+                    school
+                </span>
+            </button>
+            <button [disabled]="(Details.get('education'))?.invalid || !basicDetails.valid"
+                (click)="form = 'experience'">
+                <span class="material-symbols-outlined" [class.active-tab]="form === 'experience'"
+                    [class.work-icon]="(Details.get('education'))?.valid && basicDetails.valid">
+                    business_center
+                </span>
+            </button>
+        </div>
+
+        <div [ngSwitch]="form">
+            <form *ngSwitchCase="'basicDetails'" [class.loader]="loading" [formGroup]="basicDetails" class="input-container basic-form">
+                <h2>Personal Details</h2>
+                <div class="input-form">
+
+                    <label for="image" *ngIf="!imageStatus">Image:</label>
+                    <!-- <input type="text" id="image" formControlName="image" class="input-field" /> -->
+                    <div *ngIf="imageStatus" class="image-container">
+                        <span class="remove-img material-symbols-outlined"
+                        (click)="imageUrl = ''; imageStatus = false">
+                            close
+                        </span>
+                        <img [src]="imageUrl" alt="Profile Image"/>
+                    </div>
+                    <input type="file" accept=".png, .jpeg" class="input-field" (change)="uploadImage($event)" />
+                </div>
+
+                <div class="input-form">
+                    <label for="name">Name:</label>
+                    <div>
+                        <input type="text" id="basic-details-name" formControlName="name" class="input-field"
+                            placeholder="Enter your full name" autocomplete="name" />
+                        <div *ngIf="basicDetails.get('name')?.invalid && basicDetails.get('name')?.touched"
+                            class="error">
+                            Please enter a name.
+                        </div>
+                    </div>
+                </div>
+                <div class="input-form">
+                    <label for="gender">Gender:</label>
+                    <div class="ok d-flex">
+                        <input type="radio" name="gender" id="male" formControlName="gender" value="male"
+                            class="input-field" />
+                        <label for="male">Male</label>
+                        <input type="radio" name="gender" id="female" formControlName="gender" value="female"
+                            class="input-field" />
+                        <label for="male">Female</label>
+                        <input type="radio" name="gender" id="other" formControlName="gender" value="other"
+                            class="input-field" />
+                        <label for="male">Other</label>
+                    </div>
+                </div>
+                <div class="input-form">
+                    <label for="email">Email:</label>
+                    <div>
+                        <input readonly type="email" id="basic-details-email" formControlName="email"
+                            class="input-field" placeholder="Enter your E-Mail" autocomplete="email" />
+                        <div *ngIf="basicDetails.get('email')?.invalid && basicDetails.get('email')?.touched"
+                            class="error">
+                            Please enter a valid email.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-form">
+                    <label for="phone">Phone:</label>
+                    <div>
+                        <input maxLength="10" minlength="10" type="tel" id="basic-details-phone"
+                            formControlName="mobile" class="input-field" placeholder="Enter your Phone Number"
+                            autocomplete="tel" />
+                        <div *ngIf="basicDetails.get('phone')?.invalid && basicDetails.get('phone')?.touched"
+                            class="error">
+                            Please enter a phone number.
+                        </div>
+                    </div>
+                </div>
+                <div class="input-form address" formGroupName="address">
+                    <div class="address-form">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" formControlName="city" class="input-field"
+                            placeholder="Enter your City" />
+                    </div>
+                    <div class="address-form">
+                        <label for="state">State:</label>
+                        <input type="text" id="state" formControlName="state" class="input-field"
+                            placeholder="Enter your State" />
+                    </div>
+                    <div class="address-form">
+                        <label for="country">Country:</label>
+                        <input type="text" id="country" formControlName="country" class="input-field"
+                            placeholder="Enter your Country" />
+                    </div>
+                </div>
+                <div class="input-form">
+                    <label for=""></label>
+                    <button type="button" class="btn next-btn" [class.disabled-btn]="!this.basicDetails.valid" 
+                    [disabled]="!this.basicDetails.valid" (click)="form = 'education'">
+                        <span class="material-symbols-outlined">
+                            navigate_next
+                        </span>
+                    </button>
+                </div>
+            </form>
+
+            <form *ngSwitchCase="'education'" [formGroup]="Details" class="edu-form">
+                <h2>Qualifications</h2>
+                <div formArrayName="education">
+                    <div *ngFor="let item of getEducation(); let i = index" class="input-container">
+                        <button [class.first-cross]="i === 0" class="cross-btn" (click)="removeEdu(i)">
+                            <span class="delete-btn material-symbols-outlined">
+                                close
+                            </span>
+                        </button>
+
+                        <div formGroupName="{{i}}">
+                            <div class="input-form">
+                                <label for="institution">Institution:</label>
+                                <div>
+                                    <input type="text" id="institution" formControlName="institution"
+                                        class="input-field" placeholder="Enter your institution" />
+                                    <div *ngIf="item?.get('institution')?.invalid && item?.get('institution')?.touched"
+                                        class="error">
+                                        Please enter your institution.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-form">
+                                <label for="degree">Degree:</label>
+                                <div>
+                                    <input type="text" id="degree" formControlName="degree" class="input-field"
+                                        placeholder="Enter your degree" />
+                                    <div *ngIf="item?.get('degree')?.invalid && item?.get('degree')?.touched"
+                                        class="error">
+                                        Please enter your degree.
+                                    </div>
+                                </div>
+                            </div>
+                            <div formGroupName="year" class="input-form address">
+                                <div class="input-form">
+                                    <label for="education-from">From:</label>
+                                    <div>
+                                        <input type="number" min="1900" max="2100" id="education-from"
+                                            formControlName="from" class="input-field" placeholder="Enter start year" />
+                                        <div *ngIf="item?.get('year')?.get('from')?.invalid && item?.get('year')?.get('from')?.touched"
+                                            class="error">
+                                            Not a valid start year.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-form">
+                                    <label for="education-to">To:</label>
+                                    <div>
+                                        <input type="number" min="1900" max="2100" id="education-to"
+                                            formControlName="to" class="input-field" placeholder="Enter end year" />
+                                        <div *ngIf="item?.get('year')?.get('to')?.invalid && item?.get('year')?.get('to')?.touched"
+                                            class="error">
+                                            Not a valid end year.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="function-btns">
+                    <button type="button" class="btn" [disabled]="" (click)="addEdu()">
+                        <span class="material-symbols-outlined">
+                            add
+                        </span>
+                    </button>
+                    <button type="button" class="btn" (click)="form = 'experience'"
+                        [class.disabled-btn]="!this.Details.get('education')?.valid"
+                        [disabled]="!this.Details.get('education')?.valid">
+                        <span class="material-symbols-outlined">
+                            navigate_next
+                        </span>
+                    </button>
+                </div>
+            </form>
+
+            <form *ngSwitchCase="'experience'" [formGroup]="Details" class="exp-form">
+                <h2>Experience</h2>
+                <div formArrayName="experience">
+                    <div *ngFor="let item of getExperience(); let i = index" class="input-container">
+
+                        <div formGroupName="{{i}}">
+                            <div class="input-form">
+                                <label for="company">Company:</label>
+                                <div>
+                                    <input type="text" id="company" formControlName="company" class="input-field"
+                                        placeholder="Enter your company" />
+                                    <div *ngIf="item?.get('company')?.invalid && item?.get('company')?.touched"
+                                        class="error">
+                                        Please enter your company.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-form">
+                                <label for="designation">Designation:</label>
+                                <div>
+                                    <input type="text" id="designation" formControlName="designation"
+                                        class="input-field" placeholder="Enter your designation" />
+                                    <div *ngIf="item?.get('designation')?.invalid && item?.get('designation')?.touched"
+                                        class="error">
+                                        Please enter your designation.
+                                    </div>
+                                </div>
+                            </div>
+                            <div formGroupName="year" class="input-form address">
+                                <div class="input-form">
+                                    <label for="experience-from">From:</label>
+                                    <div>
+                                        <input type="number" min="1900" max="2100" id="experience-from"
+                                            formControlName="from" class="input-field" placeholder="Enter start year" />
+                                        <div *ngIf="item?.get('year')?.get('from')?.invalid && item?.get('year')?.get('from')?.touched"
+                                            class="error">
+                                            Not a valid start year.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-form">
+                                    <label for="experience-to">To:</label>
+                                    <div>
+                                        <input type="number" min="1900" max="2100" id="experience-to"
+                                            formControlName="to" class="input-field" placeholder="Enter end year" />
+                                        <div *ngIf="item?.get('year')?.get('to')?.invalid && item?.get('year')?.get('to')?.touched"
+                                            class="error">
+                                            Not a valid end year.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="cross-btn" [class.first-cross]="i === 0" (click)="removeExp(i)">
+                                <span class="delete-btn material-symbols-outlined">
+                                    close
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="function-btns">
+                    <button type="button" class="btn" (click)="addExp()">
+                        <span class="material-symbols-outlined">
+                            add
+                        </span>
+                    </button>
+                    <button type="submit" class="btn" [class.submitting]="updating" (click)="updateDetails()"
+                        [class.disabled-btn]="!this.Details.get('experience')?.valid"
+                        [disabled]="!this.Details.get('experience')?.valid">
+                        <span class="material-symbols-outlined">
+                            cloud_upload
+                        </span>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</body>
