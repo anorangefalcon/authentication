@@ -205,7 +205,7 @@ module.exports = {
     fetchUserDetails: async (req, res) => {
         console.log('inside fetchUser Controller');
         try {
-            const input = req.body;
+            const input = (req.body.admin)? req.body : req.user;
             if (input.admin) {
                 if (!(module.exports.authenticateAdmin(req.user.email))) {
                     res.status(200).json({
@@ -213,13 +213,21 @@ module.exports = {
                     });
                 }
             }
-            const user = await User.findOne(
-                { email: input.email },
-                { email: 1, userDetails: 1 }).populate('userDetails');
-                
+
+            let user;
+            if(input.userId){
+                user = await User.findById(input.userId, {email: 1, userDetails: 1}).populate('userDetails');;
+            }
+            else{
+                user = await User.findOne(
+                    { email: input.email },
+                    { email: 1, userDetails: 1 }).populate('userDetails');
+            }
+
             redisClient.setEx(`fetchUserDetails:${input.email}`, func_expiry_time, JSON.stringify({
                 user
             }));
+            
             res.status(200).json({
                 user
             });
@@ -298,6 +306,59 @@ module.exports = {
             return res.status(500).json({
                 message: 'Internal server error, unable to verify admin'
             });
+        }
+    },
+
+    forgotPassword: async (req, res) => {   
+        try {
+            req.body.email = req.body.email.toLowerCase();
+            const user = await User.findOne({
+                email: req.body.email
+            }, {'email': 1,'userId': 1, 'password': 1});
+
+            const token = jwt.sign({
+                userId: user._id,
+                password: user.password
+            }, SECRET_KEY, { expiresIn: '90s' });
+
+            
+            mailer.resetPasswordMail({
+                email: user.email,
+                token: token
+            });
+            return res.status(200).json({linkSent: true})
+            
+        } catch (error) {
+            res.status(500).json({
+                linkSent: false,
+                message: "Unable to update password right now", error
+            });
+        }
+    },
+
+    updatePassword: async (req, res) =>{
+        console.log(req.user);
+        console.log(req.body.password);
+        
+        const user = await User.findById(req.user.userId);
+
+        if(await bcrypt.compare(req.body?.password, user?.password)){
+            return res.status(400).json({
+                message: 'Cannot set same password as before'
+            })
+        }
+
+        if(user.password === req.user.password){
+            await User.updateOne({email: user.email}, {$set: {'password': await bcrypt.hash(req.body.password, 10)}});
+            res.status(200).json({
+                passwordReset: true
+            })
+        }
+        else{
+            res.status(400).json({
+                passwordReset: false,
+                message: 'Unable to reset password due to server error'
+            })
         }
     },
 
