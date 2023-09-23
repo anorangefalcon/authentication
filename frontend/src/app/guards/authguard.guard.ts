@@ -11,7 +11,7 @@ export const authguardGuard: CanActivateFn = (route, state) => {
 
   let _router = inject(Router);
   let _apiService = inject(ApiService);
-
+  
   if (user === null && route.data['role'] !== 'authenticate') {
     if(route.data['role'] === 'signup' && _apiService.email !== ''){
       return true;

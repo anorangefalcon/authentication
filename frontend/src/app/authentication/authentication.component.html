@@ -1,7 +1,7 @@
 <div class="container">
     <div class="input-container" [class.loading]="loading === true">
-        <h2 class="title">Let's Get Started</h2>
-        <form [formGroup]="authForm" class="input-form" (ngSubmit)="authenticate()">
+        <h2 *ngIf="!resetEmailSent" class="title">Let's Get Started</h2>
+        <form *ngIf="!resetEmailSent" [formGroup]="authForm" class="input-form" (ngSubmit)="authenticate()">
             <div class="email-input">
                 <input class="input-field" name="email" type="email" id="email" autocomplete="email"
                     placeholder="Enter your email" required [readOnly]="emailExists" [class.read-only]="emailExists"
@@ -11,18 +11,24 @@
                 </span>
             </div>
 
-            <input class="input-field" *ngIf="emailExists" name="password" id="password" autocomplete="current-password"
-                [class.wrongPassword]="passwordMatched === false" type="password" placeholder="password" required
-                formControlName="password">
-            <small *ngIf="!passwordMatched">
-                Incorrect password
-            </small>
-            <small *ngIf="inactiveAccount">
-                This user has been deleted by the admin.
-            </small>
-            <small *ngIf="isProviderAccount">
-                Use {{isProviderAccount}} provider to Login.
-            </small>
+            <div class="password-div">
+
+                <input class="input-field" *ngIf="emailExists" name="password" id="password" autocomplete="current-password"
+                    [class.wrongPassword]="passwordMatched === false" type="password" placeholder="password" required
+                    formControlName="password">
+                <small (click)="forgotPass()" *ngIf="emailExists" class="forgot-btn" >
+                    Forgot Password?
+                </small>
+                <small *ngIf="!passwordMatched">
+                    Incorrect password
+                </small>
+                <small *ngIf="inactiveAccount">
+                    This user has been deleted by the admin.
+                </small>
+                <small *ngIf="isProviderAccount">
+                    Use {{isProviderAccount}} provider to Login.
+                </small>
+            </div>
 
             <div class="buttons-div">
                 <button *ngIf="!emailExists" [disabled]="!authForm.get('email')?.valid"
@@ -40,7 +46,7 @@
 
         </form>
 
-        <div class="provider-login">
+        <div *ngIf="!resetEmailSent" class="provider-login">
 
             <div id="g_id_onload"
             data-client_id="628861919103-dav32kkklt1pne4pn1ljck5380u20fp2.apps.googleusercontent.com"
@@ -59,6 +65,15 @@
             <button type="button" (click)="loginWithFacebook()" class="">
                 <img src="./../../assets/facebook.png" alt="facebook-icon">
             </button> -->
+        </div>
+
+        <div class="reset-email-sent" *ngIf="resetEmailSent">
+            <span class="material-symbols-outlined">
+                send
+            </span>
+            <p>
+                Password reset link Sent to {{email}}
+            </p>
         </div>
     </div>
 </div>

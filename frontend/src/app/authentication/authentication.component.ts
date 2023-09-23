@@ -19,6 +19,7 @@ export class AuthenticationComponent implements OnInit {
   request: any = {};
   script: any;
   emailExists: boolean = false;
+  resetEmailSent: boolean = false;
   loading: boolean = false;
   passwordMatched: any = 'random';
 
@@ -186,6 +187,19 @@ export class AuthenticationComponent implements OnInit {
       });
 
     }
+  }
+
+  forgotPass(){
+    console.log(this.authForm.get('email')?.value);
+    this.email = this.authForm.get('email')?.value || '';
+    this.loading = true;
+    this.ApiService.forgotPassword({email: this.authForm.get('email')?.value}).subscribe((response: any) => {
+      console.log(response);
+      if(response.linkSent){
+        this.loading = false;
+        this.resetEmailSent = true;
+      }
+    });
   }
 
   ngOnDestroy() {

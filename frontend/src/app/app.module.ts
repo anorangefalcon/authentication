@@ -6,11 +6,14 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    ChangepasswordComponent,
     // NavbarComponent
   ],
   imports: [
@@ -19,7 +22,8 @@ import { AuthenticationModule } from './authentication/authentication.module';
     AuthenticationModule,
     HttpClientModule,
     SocialLoginModule,
-    
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     {

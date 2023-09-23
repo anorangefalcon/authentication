@@ -15,18 +15,7 @@ export class ApiService {
 
 
   constructor(private http: HttpClient, private cookieService: CookieService,
-    private authService: SocialAuthService, private router: Router) {
-
-    // window.addEventListener('authCredential', (event: any) => {
-    //   console.log('G-Event', event.detail);
-    //   this.apiAuthenticate(event.detail).subscribe((response: any) => {
-    //     console.log(response);
-        
-    //   });
-    // });
-  }
-
-
+    private authService: SocialAuthService, private router: Router) {}
 
   getLoggedInUser(): void {
     let loggedInUser: any = null;
@@ -83,6 +72,14 @@ export class ApiService {
     return this.http.post('http://localhost:5500/updateUserDetails', req);
   }
 
+  forgotPassword(req: any): Observable<any> {
+    return this.http.post('http://localhost:5500/forgotPassword', req);
+  }
+
+  updatePassword(req:any): Observable<any> {
+    return this.http.post('http://localhost:5500/updatePassword', req);
+  }
+
   fetchAllUsers(req: any, parameter?: any): Observable<any> {
     const URL = 'http://localhost:5500/fetchAllUsers';
     let params = new HttpParams();
@@ -109,12 +106,8 @@ export class ApiService {
   logout() {
     sessionStorage.removeItem('user');
     this.cookieService.delete('token');
-
-    if (this.provider) {
-      console.log('logging out provider also');
-      this.authService.signOut();
-    }
-    this.router.navigate(['/']);
+    // window.location.reload();
   }
 
+  
 }

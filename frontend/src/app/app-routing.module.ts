@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavbarComponent } from './navbar/navbar.component';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
+import { authguardGuard } from './guards/authguard.guard';
 
 const routes: Routes = [
   {path: '', loadChildren: ()=> import('./authentication/authentication.module')
   .then(m => m.AuthenticationModule)},
   {path: 'dashboard', loadChildren: ()=> import('./dashboard/dashboard.module')
   .then(m => m.DashboardModule)},
-  {path: 'navbar', component: NavbarComponent},
+  {path: 'changepassword/:resetToken', component: ChangepasswordComponent, canActivate: [authguardGuard], data: {role: 'authenticate'}},
   {path: '**', redirectTo: ''}
 ];
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from './services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,25 +9,27 @@ import { ApiService } from './services/api.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'frontend';
+  title = 'Authentication + Mongo Data';
 
-  constructor(private cookieService: CookieService, private apiService: ApiService) { }
+  constructor(private cookieService: CookieService, private apiService: ApiService,
+    private router: Router) { }
 
   ngOnInit(): void {
     const token = this.cookieService.get('token');
-    
-    if(token){
+
+    if (token) {
       this.apiService.apiLogin().subscribe({
-        next: (res:any) => {
-        sessionStorage.setItem('user', JSON.stringify(res.body));
+        next: (res: any) => {
+          sessionStorage.setItem('user', JSON.stringify(res.body));
         },
-        error: (err:any) => {
+        error: (err: any) => {
           this.apiService.logout();
         }
       });
     }
-    else{
+    else {
       this.apiService.logout();
+
     }
   }
 }
