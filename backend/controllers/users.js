@@ -9,6 +9,7 @@ const redisClient = require('./../config/redisClient');
 const auth_expiry_time = 3600;
 const func_expiry_time = 4800;
 const {OAuth2Client} = require('google-auth-library');
+const passwordState = require('./../controllers/password_state');
 
 module.exports = {
     
@@ -321,11 +322,13 @@ module.exports = {
                 password: user.password
             }, SECRET_KEY, { expiresIn: '90s' });
 
-            
+            await passwordState.createPasswordChangeState(token);
+
             mailer.resetPasswordMail({
                 email: user.email,
                 token: token
             });
+
             return res.status(200).json({linkSent: true})
             
         } catch (error) {
@@ -339,7 +342,7 @@ module.exports = {
     updatePassword: async (req, res) =>{
         console.log(req.user);
         console.log(req.body.password);
-        
+    
         const user = await User.findById(req.user.userId);
 
         if(await bcrypt.compare(req.body?.password, user?.password)){

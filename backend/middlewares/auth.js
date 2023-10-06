@@ -1,10 +1,16 @@
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'falconHeHeAckerman';
+const passwordState = require('./../controllers/password_state')
 
-const auth = (req, res, next) => {
+const auth = async(req, res, next) => {
     const token = req.headers?.authorization?.split(' ')[1] || req.body.resetToken;
     console.log(token);
-    if (!token) return res.status(401).json({ message: 'Token not found :(' });
+    let shouldReset = true;
+    if (req.body.resetToken){
+        shouldReset = await passwordState.checkPasswordStateStatus(token);
+    }
+
+    if (!token || !shouldReset) return res.status(401).json({ message: 'Token not found :(' });
     try {
         const details = jwt.verify(token, SECRET_KEY);
         req.user = details;

@@ -3,6 +3,7 @@ const router = express.Router();
 const controller = require('./../../../controllers/users');
 const auth = require('./../../../middlewares/auth');
 const checkRedisCache = require('./../../../middlewares/redisCache');
+const passwordState = require('../../../controllers/password_state');
 
 // router.use(checkRedisCache);
 // router.post('/', checkRedisCache, controller.authenticate);
