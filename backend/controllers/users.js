@@ -105,7 +105,7 @@ module.exports = {
                 email: user.email,
                 userId: user._id,
                 type: user.type,
-            }, SECRET_KEY, { expiresIn: '120s' });
+            }, SECRET_KEY, { expiresIn: '1200s' });
 
             if (((input?.provider === user.providerId.provider) && (input?.id === user.providerId.id)) 
             || req.user || (await bcrypt.compare(input?.password, user?.password))
